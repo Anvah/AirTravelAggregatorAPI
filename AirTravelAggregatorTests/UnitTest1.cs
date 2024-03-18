@@ -52,105 +52,88 @@ namespace AirTravelAggregatorTests
             {
                 new FirstFlight
                 {
-                    Id = "AA123",
-                    Airline = "American Airlines",
-                    Transfers = Enumerable.Empty<FirstFlightTransfer>(),
-                    Price = 250.00m
-                },
-                new FirstFlight
-                {
-                    Id = "KL456",
-                    Airline = "KLM Royal Dutch Airlines",
-                    Transfers = new List<FirstFlightTransfer>
+                    Id = "NYC-LON-PAR-1",
+                    Airline = "Example Airways",
+                    DeparturePoint = new FirstFlightTransfer
+                    {
+                        Airport = "JFK JFK JFK",
+                        DepartureDataTime = DateTime.UtcNow,
+                    },
+                    ArrivalPoint = new FirstFlightTransfer
+                    {
+                        Airport = "LHR JFK JFK",
+                        ArrivalDataTime = DateTime.UtcNow.AddHours(8),
+                    },
+                    Transfers = new FirstFlightTransfer[]
                     {
                         new FirstFlightTransfer
                         {
-                            Airport = "Amsterdam",
-                            ArrivalDataTime = new DateTime(2024, 03, 16, 10, 30, 0),
-                            DepartureDataTime = new DateTime(2024, 03, 16, 12, 0, 0)
+                            Airport = "CDG JFK JFK",
+                            ArrivalDataTime = DateTime.UtcNow.AddHours(3),
+                            DepartureDataTime = DateTime.UtcNow.AddHours(4),
                         }
                     },
-                    Price = 180.50m
+                    Price = 1200.00m
                 },
-                new FirstFlight
-                {
-                    Id = "OZ789",
-                    Airline = "Asiana Airlines",
-                    Transfers = Enumerable.Empty<FirstFlightTransfer>(),
-                    Price = 300.00m
-                },
-                new FirstFlight
-                {
-                    Id = "TG101",
-                    Airline = "Thai Airways",
-                    Transfers = new List<FirstFlightTransfer>
+               new FirstFlight
+               {
+                   Id = "PAR-TYO-1",
+                   Airline = "Example Airways",
+                   DeparturePoint = new FirstFlightTransfer
+                   {
+                       Airport = "CDG JFK JFK",
+                       DepartureDataTime = DateTime.UtcNow,
+                   },
+                   ArrivalPoint = new FirstFlightTransfer
+                   {
+                       Airport = "HND JFK JFK",
+                       ArrivalDataTime = DateTime.UtcNow.AddHours(14),
+                   },
+                   Transfers = new FirstFlightTransfer[] { },
+                   Price = 1800.00m
+               },
+               new FirstFlight
+               {
+                   Id = "LAX-SYD-AKL-1",
+                   Airline = "Example Airways",
+                   DeparturePoint = new FirstFlightTransfer
+                   {
+                       Airport = "LAX JFK JFK",
+                       DepartureDataTime = DateTime.UtcNow,
+                   },
+                   ArrivalPoint = new FirstFlightTransfer
+                   {
+                       Airport = "SYD JFK JFK",
+                       ArrivalDataTime = DateTime.UtcNow.AddHours(20),
+                   },
+                   Transfers = new FirstFlightTransfer[]
                     {
                         new FirstFlightTransfer
                         {
-                            Airport = "Bangkok",
-                            ArrivalDataTime = new DateTime(2024, 03, 16, 8, 0, 0),
-                            DepartureDataTime = new DateTime(2024, 03, 16, 9, 30, 0)
-                        },
-                        new FirstFlightTransfer
-                        {
-                            Airport = "Singapore",
-                            ArrivalDataTime = new DateTime(2024, 03, 16, 14, 0, 0),
-                            DepartureDataTime = new DateTime(2024, 03, 16, 16, 0, 0)
+                            Airport = "AKL JFK JFK",
+                            ArrivalDataTime = DateTime.UtcNow.AddHours(15),
+                            DepartureDataTime = DateTime.UtcNow.AddHours(16),
                         }
                     },
-                    Price = 400.00m
-                },
-                new FirstFlight
-                {
-                    Id = "SU567",
-                    Airline = "Aeroflot",
-                    Transfers = Enumerable.Empty<FirstFlightTransfer>(),
-                    Price = 100.00m
-                },
-                new FirstFlight
-                {
-                    Id = "LH654",
-                    Airline = "Lufthansa",
-                    Transfers = new List<FirstFlightTransfer>
-                    {
-                        new FirstFlightTransfer
-                        {
-                            Airport = "Frankfurt",
-                            ArrivalDataTime = new DateTime(2024, 03, 16, 11, 0, 0),
-                            DepartureDataTime = new DateTime(2024, 03, 16, 12, 30, 0)
-                        }
-                    },
-                    Price = 120.00m
-                },
-                new FirstFlight
-                {
-                    Id = "IB987",
-                    Airline = "Iberia",
-                    Transfers = Enumerable.Empty<FirstFlightTransfer>(),
-                    Price = 220.00m
-                },
-                new FirstFlight
-                {
-                    Id = "EK753",
-                    Airline = "Emirates",
-                    Transfers = new List<FirstFlightTransfer>
-                    {
-                        new FirstFlightTransfer
-                        {
-                            Airport = "Mumbai",
-                            ArrivalDataTime = new DateTime(2024, 03, 16, 9, 0, 0),
-                            DepartureDataTime = new DateTime(2024, 03, 16, 10, 30, 0)
-                        }
-                    },
-                    Price = 280.00m
-                },
-                new FirstFlight
-                {
-                    Id = "KE888",
-                    Airline = "Korean Air",
-                    Transfers = Enumerable.Empty<FirstFlightTransfer>(),
-                    Price = 200.00m
-                }
+                   Price = 2500.00m
+               },
+               new FirstFlight
+               {
+                   Id = "SHA-ICN-1",
+                   Airline = "Example Airways",
+                   DeparturePoint = new FirstFlightTransfer
+                   {
+                       Airport = "PVG JFK JFK",
+                       DepartureDataTime = DateTime.UtcNow,
+                   },
+                   ArrivalPoint = new FirstFlightTransfer
+                   {
+                       Airport = "ICN JFK JFK",
+                       ArrivalDataTime = DateTime.UtcNow.AddHours(2),
+                   },
+                   Transfers = new FirstFlightTransfer[] { },
+                   Price = 900.00m
+               }
 
             };
         }

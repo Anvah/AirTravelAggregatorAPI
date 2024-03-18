@@ -30,8 +30,8 @@ namespace AirTravelAggregatorAPI.Mapper
                 .Map(dest => dest.OriginalId, src => src.Id)
                 .Map(agf => agf.Airline, f => new Airline { Name = f.Airline })
                 .Map(agf => agf.Price, f => f.Price)
-                .Map(agf => agf.DeparturePoint, f => new Destination {AirportName = f.DepartureAirport, CityName = f.DepartureCity, CountryName = f.DepartureCountry })
-                .Map(agf => agf.ArrivalPoint, f => new Destination { AirportName = f.ArrivalAirport, CityName = f.ArrivalCity, CountryName = f.ArrivalCountry })
+                .Map(agf => agf.DeparturePoint, f => new Destination {AirportName = f.DepartureAirport, CityName = f.DepartureCity, CountryName = f.DepartureCountry, DepartureTime = DateTime.Parse(f.DepartureTime) })
+                .Map(agf => agf.ArrivalPoint, f => new Destination { AirportName = f.ArrivalAirport, CityName = f.ArrivalCity, CountryName = f.ArrivalCountry, ArrivalTime = DateTime.Parse(f.ArrivalTime) })
                 .Map(agf => agf.Transfers, f => CreateDestinationsFroSecondFlightTransfer(f.Transfres, f.TransfersArivalDateTime, f.TransfersDepartureDateTime))
                 .Map(agf => agf.Baggage, f => new Baggage { IsAvailable = f.IsBaggageAvaible, Price = f.BaggagePrice })
                 .Map(dest => dest.Sourse, src => FlightSourse.SecondFlightService);

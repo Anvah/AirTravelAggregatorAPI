@@ -16,7 +16,6 @@ namespace AirTravelAggregatorAPI
     {
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton(Log.Logger);
             services.AddTransient<IFlightAggregatorService, FlightAggregateService>();
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (environment != null && environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
