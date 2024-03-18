@@ -113,7 +113,7 @@ namespace AirTravelAggregatorAPI
                 Scheme = "Bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "JSON Web Token based security using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                Description = "JSON Web Token based security. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
             };
 
             var securityReq = new OpenApiSecurityRequirement()
