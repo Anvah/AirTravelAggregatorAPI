@@ -1,6 +1,7 @@
 ﻿using AirTravelAggregatorAPI.Models.AggregatedModels;
 using AirTravelAggregatorAPI.Models.Enums;
 using AirTravelAggregatorAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 
@@ -23,6 +24,7 @@ namespace AirTravelAggregatorAPI.Controllers
         {
             return await _flightAggregatorService.GetFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
         }
+        [Authorize]
         [Route("/bookFlight")]
         [HttpPost]
         public async Task<Flight> Book(CancellationToken cancellationToken, string originalId, FlightSourse sourse)

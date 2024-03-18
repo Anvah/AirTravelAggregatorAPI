@@ -21,8 +21,9 @@ namespace AirTravelAggregatorAPI
             builder.Host.UseSerilog();
             builder.Services.AddControllers();
             builder.Services.ConfigureApplicationServices(builder.Configuration);
+            builder.Services.ConfigureAuthentication(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.ConfigureSwagger();
             builder.Services.AddLogging(loggingBuilder =>
             {
                 loggingBuilder.ClearProviders();
@@ -37,8 +38,9 @@ namespace AirTravelAggregatorAPI
             }
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+            
             app.MapControllers();
             app.Run();
             Log.Information("Service stop");
