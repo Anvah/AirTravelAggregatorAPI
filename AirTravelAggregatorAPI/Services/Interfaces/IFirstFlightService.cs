@@ -8,9 +8,9 @@ namespace AirTravelAggregatorAPI.Services.Interfaces
 {
     public interface IFirstFlightService
     {
-        [Get("/getFlights")]
+        [Get("/getFligts")]
         Task<ApiResponse<IEnumerable<FirstFlight>>> GetFlights(CancellationToken cancellationToken, DateTime date, decimal maxPrice = decimal.MaxValue, int maxTransfersCount = int.MaxValue);
-        [Get("/bookFlight")]
+        [Post("/bookFlight")]
         Task<FirstFlight> Book(string Id, CancellationToken cancellationToken);
     }
 }

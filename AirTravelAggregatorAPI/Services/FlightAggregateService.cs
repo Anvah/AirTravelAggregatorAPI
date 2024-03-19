@@ -9,6 +9,8 @@ using MapsterMapper;
 using System.ComponentModel;
 using AirTravelAggregatorAPI.Models.Enums;
 using System.Security.Cryptography.Xml;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace AirTravelAggregatorAPI.Services
 {
@@ -18,23 +20,36 @@ namespace AirTravelAggregatorAPI.Services
         private readonly ISecondFlightService _secondFlightService;
         private readonly IMapper _mapper;
         private readonly ILogger<FlightAggregateService> _logger;
+        private IMemoryCache memoryCache;
 
-        public FlightAggregateService(IFirstFlightService firstFlightService, ISecondFlightService secondFlightService, IMapper mapper, ILogger<FlightAggregateService> logger)
+        public FlightAggregateService(IFirstFlightService firstFlightService, ISecondFlightService secondFlightService, IMapper mapper, ILogger<FlightAggregateService> logger, IMemoryCache memoryCache)
         {
             _firstFlightService = firstFlightService;
             _secondFlightService = secondFlightService;
             _mapper = mapper;  
             _logger = logger;
+            this.memoryCache = memoryCache;
         }
         public async Task<IEnumerable<Flight>> GetFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
         {
             _logger.LogInformation("start getting flights with params: date: {@date}, sort: {@sortProperty}, maxPrice: {@maxPrice}, airlineName: {@airlineName}, maxTransfersCount: {@maxTransfersCount}"
                 ,date.Date, sortProperty.ToString(), maxPrice, airlineName, maxTransfersCount);
-            var fristFlights = await GetFirstServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
-            var secondFlights = await GetSecondServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
-            var flights = fristFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));
-            flights = flights.Concat(secondFlights.Select(f => _mapper.Map<SecondFlight, Flight>(f)))
-                .OrderBy(f => sortProperty == SortProperty.ByPrice ? f.Price : f.Transfers.Count());
+            IEnumerable<Flight> flights;
+            if(memoryCache.TryGetValue(date, out flights))
+            {
+                _logger.LogInformation("data found in cache");
+            }
+            else
+            {
+                _logger.LogInformation("data not found in cache, strating requests");
+                var fristFlights = await GetFirstServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
+                var secondFlights = await GetSecondServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
+                flights = fristFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));
+                flights = flights.Concat(secondFlights.Select(f => _mapper.Map<SecondFlight, Flight>(f)))
+                    .OrderBy(f => sortProperty == SortProperty.ByPrice ? f.Price : f.Transfers.Count());
+                memoryCache.Set(date, flights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
+            }
+           
             _logger.LogInformation("fligts aggregate success");
             return flights;
         }

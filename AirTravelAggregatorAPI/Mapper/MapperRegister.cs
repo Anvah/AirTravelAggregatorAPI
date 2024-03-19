@@ -71,13 +71,19 @@ namespace AirTravelAggregatorAPI.Mapper
                 {
                     return null;
                 }
+                /*DateTime arrivalDate;
+                bool isArrDateCovert = DateTime.TryParse(AirportCityCountry[i],out arrivalDate);
+                DateTime departureDate;
+                bool isDepDateCovert = DateTime.TryParse(departureDates[i],out departureDate);
+                if(!(isArrDateCovert || isArrDateCovert))
+                    return null;*/
                 destinations[i] = new Destination
                 {
                     AirportName = AirportCityCountry[0],
                     CityName = AirportCityCountry[1],
                     CountryName = AirportCityCountry[2],
-                    /*ArrivalTime = arrivalTime,
-                    DepartureTime = departureTime*/
+                    ArrivalTime = arrivalDates[i].Adapt<DateTime>(),
+                    DepartureTime = departureDates[i].Adapt<DateTime>()
 
                 };
             }

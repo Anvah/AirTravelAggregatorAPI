@@ -37,6 +37,9 @@ namespace AirTravelAggregatorAPI
             {
                 services.AddRefitEndpoints(configuration);
             }
+            string cacheSizeLimitStr = Environment.GetEnvironmentVariable("CacheSizeLimit");
+            long.TryParse(cacheSizeLimitStr, out long cacheSizeLimit);
+            services.AddMemoryCache(c =>c.SizeLimit = cacheSizeLimit);
             services.AddSingleton(GetConfigureMappinfConfig());
             services.AddScoped<IMapper, ServiceMapper>();
             

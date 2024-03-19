@@ -6,8 +6,9 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "RefitRoute__FirstFlightSevice": "http://localhost:8083",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
+        "RefitRoute__FirstFlightSevice": "https://localhost:7208",
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
+        "CacheSizeLimit": "1073741824"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5115"
@@ -18,8 +19,9 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "RefitRoute__FirstFlightSevice": "http://localhost:8083",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
+        "RefitRoute__FirstFlightSevice": "https://localhost:7208",
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
+        "CacheSizeLimit": "1073741824"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7195;http://localhost:5115"
@@ -30,8 +32,9 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "RefitRoute__FirstFlightSevice": "http://localhost:8083",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
+        "RefitRoute__FirstFlightSevice": "https://localhost:7208",
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
+        "CacheSizeLimit": "1073741824"
       }
     },
     "Docker": {
@@ -40,8 +43,9 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "RefitRoute__FirstFlightSevice": "http://localhost:8083",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
+        "RefitRoute__FirstFlightSevice": "https://localhost:7208",
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
+        "CacheSizeLimit": "1073741824"
       },
       "publishAllPorts": true,
       "useSSL": true
