@@ -13,6 +13,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
+using Serilog;
+using AirTravelAggregatorAPI.Models.ResultModels;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace AirTravelAggregatorAPI
 {
@@ -35,8 +40,6 @@ namespace AirTravelAggregatorAPI
             services.AddSingleton(GetConfigureMappinfConfig());
             services.AddScoped<IMapper, ServiceMapper>();
             
-           
-            //MapsterConfiguration.Configure();
             return services;
         }
         public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -52,8 +55,18 @@ namespace AirTravelAggregatorAPI
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
+                    
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = context =>
+                    {
+                        Log.Logger.Information("unauthorize: invalid token");
+                        throw new UnauthorizedAccessException();
+                    },
+                };
+
             });
             return services;
 

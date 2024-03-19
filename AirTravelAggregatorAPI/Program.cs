@@ -36,12 +36,16 @@ namespace AirTravelAggregatorAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseMiddleware<ExceptionMiddleware>();
+            
             app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionMiddleware>();
+            //app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
-            
             app.MapControllers();
+            
+
             app.Run();
             Log.Information("Service stop");
 

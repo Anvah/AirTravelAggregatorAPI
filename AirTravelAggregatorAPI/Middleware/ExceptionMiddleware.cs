@@ -1,6 +1,7 @@
 ﻿using AirTravelAggregatorAPI.Models.ResultModels;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Security.Authentication;
 
 namespace AirTravelAggregatorAPI.Middleware
 {
@@ -36,11 +37,12 @@ namespace AirTravelAggregatorAPI.Middleware
                 case ValidationException:
                     code = HttpStatusCode.InternalServerError;
                     break;
-                case UnauthorizedAccessException:
+                case UnauthorizedAccessException or AuthenticationException:
                     code = HttpStatusCode.Unauthorized;
                     break;
                 case ArgumentException
-                    or InvalidOperationException:
+                    or InvalidOperationException 
+                    or HttpRequestException:
                     code = HttpStatusCode.BadRequest;
                     break;
                 case OperationCanceledException:
@@ -52,7 +54,7 @@ namespace AirTravelAggregatorAPI.Middleware
             }
             httpContext.Response.StatusCode = (int)code;
             httpContext.Response.ContentType = "application/json";
-            var apiResponse = new AitTravelApiResponse
+            var apiResponse = new AirTravelApiResponse
             {
                 Error = new ApiError
                 {
