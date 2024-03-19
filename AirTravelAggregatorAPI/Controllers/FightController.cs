@@ -26,7 +26,7 @@ namespace AirTravelAggregatorAPI.Controllers
             var flights = await _flightAggregatorService.GetFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
             return GetResponse(flights);
         }
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Route("/fligts/book")]
         public async Task<ActionResult<AirTravelApiResponse<Flight>>> Book(CancellationToken cancellationToken, string originalId, FlightSourse sourse)

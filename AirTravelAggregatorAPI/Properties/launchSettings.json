@@ -6,9 +6,9 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "CACHE_SIZE_LIMIT": "1073741824",
         "RefitRoute__FirstFlightSevice": "https://localhost:7208",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
-        "CacheSizeLimit": "1073741824"
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5115"
@@ -19,9 +19,9 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "CACHE_SIZE_LIMIT": "1073741824",
         "RefitRoute__FirstFlightSevice": "https://localhost:7208",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
-        "CacheSizeLimit": "1073741824"
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7195;http://localhost:5115"
@@ -32,9 +32,9 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "CACHE_SIZE_LIMIT": "1073741824",
         "RefitRoute__FirstFlightSevice": "https://localhost:7208",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
-        "CacheSizeLimit": "1073741824"
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
       }
     },
     "Docker": {
@@ -43,9 +43,9 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "CACHE_SIZE_LIMIT": "1073741824",
         "RefitRoute__FirstFlightSevice": "https://localhost:7208",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084",
-        "CacheSizeLimit": "1073741824"
+        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
       },
       "publishAllPorts": true,
       "useSSL": true

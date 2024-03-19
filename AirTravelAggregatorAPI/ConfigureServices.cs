@@ -27,7 +27,11 @@ namespace AirTravelAggregatorAPI
         {
 
             services.AddTransient<IFlightAggregatorService, FlightAggregateService>();
-            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (environment == null)
+            {
+                Log.Logger.Error("failed get environment variable: ASPNETCORE_ENVIRONMENT");
+            }
             if (environment != null && environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
             {
                 services.AddTransient<IFirstFlightService, FirstFlightTestService>();
@@ -37,9 +41,19 @@ namespace AirTravelAggregatorAPI
             {
                 services.AddRefitEndpoints(configuration);
             }
-            string cacheSizeLimitStr = Environment.GetEnvironmentVariable("CacheSizeLimit");
-            long.TryParse(cacheSizeLimitStr, out long cacheSizeLimit);
-            services.AddMemoryCache(c =>c.SizeLimit = cacheSizeLimit);
+            /*string? cacheSizeLimitStr = Environment.GetEnvironmentVariable("CACHE_SIZE_LIMIT");
+            long cacheSizeLimit = int.MaxValue;
+            if (cacheSizeLimitStr == null)
+            {
+                Log.Logger.Error("failed get environment variable: CACHE_SIZE_LIMIT");
+            }
+            else
+            {
+                if (long.TryParse(cacheSizeLimitStr, out cacheSizeLimit))
+                    Log.Logger.Error("failed get int value from environment variable: CACHE_SIZE_LIMIT");
+            }
+            services.AddMemoryCache(c => c.SizeLimit = cacheSizeLimit);*/
+            services.AddMemoryCache();
             services.AddSingleton(GetConfigureMappinfConfig());
             services.AddScoped<IMapper, ServiceMapper>();
             
@@ -65,7 +79,7 @@ namespace AirTravelAggregatorAPI
                 {
                     OnChallenge = context =>
                     {
-                        Log.Logger.Information("unauthorize: invalid token");
+                        Log.Logger.Warning("unauthorize: invalid token");
                         throw new UnauthorizedAccessException();
                     },
                 };
