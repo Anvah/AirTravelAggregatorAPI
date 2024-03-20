@@ -1,21 +1,9 @@
-using Xunit;
-using Moq;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AirTravelAggregatorAPI.Models.FirstServiceModels;
-using Refit;
-using AirTravelAggregatorAPI.Services.Interfaces;
-using AirTravelAggregatorAPI.Models.SecondServiceModels;
 using AirTravelAggregatorAPI.Services;
-using System.Net.Http;
-using Mapster;
-using AirTravelAggregatorAPI.Models.AggregatedModels;
-using MapsterMapper;
 using AirTravelAggregatorAPI.Mapper;
 using AirTravelAggregatorAPI.Models.Enums;
 using AirTravelAggregatorAPI.Services.TestServices;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AirTravelAggregatorTests
 {
@@ -42,8 +30,9 @@ namespace AirTravelAggregatorTests
             var mapper = new Mapper(config);
 
             var loggerMock = new Mock<ILogger<FlightAggregateService>>();
+            var memoryCache = new Mock<IMemoryCache>();
 
-            var service = new FlightAggregateService(firstFlightServiceMock, secondFlightServiceMock, mapper, loggerMock.Object);
+            var service = new FlightAggregateService(firstFlightServiceMock, secondFlightServiceMock, mapper, loggerMock.Object, memoryCache.Object);
 
             // Act
             var flights = await service.GetFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
@@ -69,8 +58,9 @@ namespace AirTravelAggregatorTests
             var mapper = new Mapper(config);
 
             var loggerMock = new Mock<ILogger<FlightAggregateService>>();
+            var memoryCache = new Mock<IMemoryCache>();
 
-            var service = new FlightAggregateService(firstFlightServiceMock, null, mapper, loggerMock.Object);
+            var service = new FlightAggregateService(firstFlightServiceMock, null, mapper, loggerMock.Object, memoryCache.Object);
 
             // Act
             var bookedFlight = await service.Book(cancellationToken, originalId, source);
@@ -93,8 +83,9 @@ namespace AirTravelAggregatorTests
             var mapper = new Mapper(config);
 
             var loggerMock = new Mock<ILogger<FlightAggregateService>>();
+            var memoryCache = new Mock<IMemoryCache>();
 
-            var service = new FlightAggregateService(null, secondFlightServiceMock, mapper, loggerMock.Object);
+            var service = new FlightAggregateService(null, secondFlightServiceMock, mapper, loggerMock.Object, memoryCache.Object);
 
             // Act
             var bookedFlight = await service.Book(cancellationToken, originalId, source);

@@ -18,7 +18,7 @@ namespace AirTravelAggregatorAPI.Controllers
         {
             _flightAggregatorService = flightAggregatorService;
         }
-        
+        //[Authorize]
         [HttpGet]
         [Route("/fligts/get")]
         public async Task<ActionResult<AirTravelApiResponse<IEnumerable<Flight>>>> GetFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)

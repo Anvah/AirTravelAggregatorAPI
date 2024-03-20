@@ -38,6 +38,10 @@ namespace AirTravelAggregatorAPI.Services
             if(memoryCache.TryGetValue(date, out flights))
             {
                 _logger.LogInformation("data found in cache");
+                if(flights == null)
+                    return Enumerable.Empty<Flight>();
+                flights.Where(f => f.Price < maxPrice
+                        && f.Transfers.Length < maxTransfersCount);
             }
             else
             {
@@ -45,11 +49,12 @@ namespace AirTravelAggregatorAPI.Services
                 var fristFlights = await GetFirstServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
                 var secondFlights = await GetSecondServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
                 flights = fristFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));
-                flights = flights.Concat(secondFlights.Select(f => _mapper.Map<SecondFlight, Flight>(f)))
-                    .OrderBy(f => sortProperty == SortProperty.ByPrice ? f.Price : f.Transfers.Count());
+                flights = flights.Concat(secondFlights.Select(f => _mapper.Map<SecondFlight, Flight>(f)));
                 memoryCache.Set(date, flights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
             }
-           
+            flights = flights
+                .Where(f => f.Airline.Name.ToLower().Contains(airlineName.ToLower()))
+                .OrderBy(f => sortProperty == SortProperty.ByPrice ? f.Price : f.Transfers.Count());
             _logger.LogInformation("fligts aggregate success");
             return flights;
         }
