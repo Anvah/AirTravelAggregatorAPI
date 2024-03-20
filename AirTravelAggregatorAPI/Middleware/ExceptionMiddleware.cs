@@ -1,4 +1,5 @@
 ﻿using AirTravelAggregatorAPI.Models.ResultModels;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Security.Authentication;
@@ -8,10 +9,12 @@ namespace AirTravelAggregatorAPI.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate next;
+        private readonly ILogger logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILogger logger)
         {
             this.next = next;
+            this.logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -64,6 +67,7 @@ namespace AirTravelAggregatorAPI.Middleware
                 }
 
             };
+            logger.LogError("@apiResponse", apiResponse);
             await httpContext.Response.WriteAsJsonAsync(apiResponse);
         }
     }
