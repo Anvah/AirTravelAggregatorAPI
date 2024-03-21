@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace AirTravelAggregatorAPI.Configurations.Swagger
 {
@@ -33,9 +34,10 @@ namespace AirTravelAggregatorAPI.Configurations.Swagger
 
             services.AddSwaggerGen(o =>
             {
-                var docPath = Path.Combine(AppContext.BaseDirectory, "documentation.xml");
-                o.IncludeXmlComments(docPath);
-                o.SchemaFilter<EnumTypesSchemaFilter>(docPath);
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                o.IncludeXmlComments(xmlPath);
+                o.SchemaFilter<EnumTypesSchemaFilter>(xmlPath);
                 o.DocumentFilter<EnumTypesDocumentFilter>();
                 o.SwaggerDoc("v1", new OpenApiInfo()
                 {
