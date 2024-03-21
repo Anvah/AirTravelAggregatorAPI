@@ -9,12 +9,12 @@ namespace AirTravelAggregatorAPI.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate next;
-        private readonly ILogger logger;
+        private readonly ILogger<ExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger logger)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
+            _logger = logger;
             this.next = next;
-            this.logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -67,7 +67,7 @@ namespace AirTravelAggregatorAPI.Middleware
                 }
 
             };
-            logger.LogError("@apiResponse", apiResponse);
+            _logger.LogError("{@apiResponse}", apiResponse);
             await httpContext.Response.WriteAsJsonAsync(apiResponse);
         }
     }

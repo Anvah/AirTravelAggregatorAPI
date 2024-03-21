@@ -5,6 +5,7 @@ using AirTravelAggregatorAPI.Models.SecondServiceModels;
 using AirTravelAggregatorAPI.Services.Interfaces;
 using Refit;
 using System.Security.Cryptography.Xml;
+using System.Threading;
 
 namespace AirTravelAggregatorAPI.Services.TestServices
 {
@@ -99,7 +100,7 @@ namespace AirTravelAggregatorAPI.Services.TestServices
 
 
             };
-        async public Task<FirstFlight> Book(string Id, CancellationToken cancellationToken)
+        async public Task<FirstFlight> Book(string Id, CancellationToken cancellationToken = default)
         {
             var flight = firstFlights.FirstOrDefault(f => f.Id == Id);
             if(flight != null)
@@ -107,8 +108,9 @@ namespace AirTravelAggregatorAPI.Services.TestServices
             return flight;
         }
 
-        public async Task<ApiResponse<IEnumerable<FirstFlight>>> GetFlights(CancellationToken cancellationToken, DateTime date, decimal maxPrice = decimal.MaxValue, int maxTransfersCount = int.MaxValue)
+        public async Task<ApiResponse<IEnumerable<FirstFlight>>> GetFlights(DateTime date, decimal maxPrice = decimal.MaxValue, int maxTransfersCount = int.MaxValue, CancellationToken cancellationToken = default)
         {
+            await Task.Delay(10000, cancellationToken);
             var sortedFlight = firstFlights
                 .Where(f => f.DeparturePoint.DepartureDataTime.Date == date.Date
                 && f.Price < maxPrice

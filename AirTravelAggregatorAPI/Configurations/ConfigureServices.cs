@@ -19,7 +19,7 @@ using AirTravelAggregatorAPI.Models.ResultModels;
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace AirTravelAggregatorAPI
+namespace AirTravelAggregatorAPI.Configurations
 {
     public static class ConfigureServices
     {
@@ -56,7 +56,7 @@ namespace AirTravelAggregatorAPI
             services.AddMemoryCache();
             services.AddSingleton(GetConfigureMappinfConfig());
             services.AddScoped<IMapper, ServiceMapper>();
-            
+
             return services;
         }
         public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -73,7 +73,7 @@ namespace AirTravelAggregatorAPI
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
-                    
+
                 };
                 options.Events = new JwtBearerEvents
                 {
@@ -133,44 +133,6 @@ namespace AirTravelAggregatorAPI
             new MapperRegister().Register(config);
 
             return config;
-        }
-        public static IServiceCollection ConfigureSwagger(this IServiceCollection services)
-        {
-            var securityScheme = new OpenApiSecurityScheme()
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "JSON Web Token based security. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
-            };
-
-            var securityReq = new OpenApiSecurityRequirement()
-            {
-                {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                },
-                new string[] {}
-            }};
-
-
-            services.AddSwaggerGen(o =>
-            {
-                o.SwaggerDoc("v1", new OpenApiInfo()
-                {
-                    Version = "v1"
-                });
-                o.AddSecurityDefinition("Bearer", securityScheme);
-                o.AddSecurityRequirement(securityReq);
-            });
-            return services;
-        }
+        } 
     }
 }

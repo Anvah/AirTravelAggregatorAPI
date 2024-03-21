@@ -1,10 +1,11 @@
 ﻿using AirTravelAggregatorAPI.Models.Enums;
+using System.Text.Json.Serialization;
 
 namespace AirTravelAggregatorAPI.Models.AggregatedModels
 {
     public class Flight
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string OriginalId { get; set; }
         public Destination ArrivalPoint { get; set; }
         public Destination DeparturePoint { get; set; }

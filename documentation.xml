@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AirTravelAggregatorAPI</name>
+    </assembly>
+    <members>
+        <member name="M:AirTravelAggregatorAPI.Controllers.FlightController.GetFlights(System.DateTime,AirTravelAggregatorAPI.Models.Enums.SortProperty,System.Decimal,System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Получение билетов
+            </summary>
+            <param name="date">Дата вылета</param>
+            <param name="sortProperty">Свойство, по которому будет сортироваться объект</param>
+            <param name="maxPrice">Максимальная цена</param>
+            <param name="airlineName">Название авиалинии перевозчика</param>
+            <param name="maxTransfersCount">Максимальное количество пересадок</param>
+            <returns></returns>
+        </member>
+        <member name="M:AirTravelAggregatorAPI.Controllers.FlightController.Book(System.String,AirTravelAggregatorAPI.Models.Enums.FlightSourse,System.Threading.CancellationToken)">
+            <summary>
+            Бронирование билета
+            </summary>
+            <param name="originalId">Id билета из оригинального источника</param>
+            <param name="sourse">Источник, из которого получен билет</param>
+            <returns></returns>
+        </member>
+        <member name="M:AirTravelAggregatorAPI.Services.FlightAggregateService.GetFlights(System.Threading.CancellationToken,System.DateTime,AirTravelAggregatorAPI.Models.Enums.SortProperty,System.Decimal,System.String,System.Int32)">
+             <summary>
+             Аггрегация данных о билетах из разных источников и кэширование результата
+             </summary>
+            <remarks>
+             Для более эффективного использования кэша лучше отправлять в сервисы запросы без фильтрации.
+             Пользователи часто могут запрашивать данные о билетах на одни и те же даты с разными фильтрами и сортировкой
+             соответственно в данной ситуации кэшировать лучше данные, где ключом будет дата перелета,
+             а фильтрации и сортировки выполнять на стороне приложения
+             </remarks>
+             <param name="date">Дата вылета</param>
+             <param name="sortProperty">Свойство, по которому будет сортироваться объект</param>
+             <param name="maxPrice">Максимальная цена</param>
+             <param name="airlineName">Название авиалинии перевозчика</param>
+             <param name="maxTransfersCount">Максимальное количество пересадок</param>
+             <returns></returns>
+        </member>
+        <member name="T:Refit.Implementation.Generated">
+            <inheritdoc />
+        </member>
+        <member name="T:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesIFirstFlightService">
+            <inheritdoc />
+        </member>
+        <member name="P:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesIFirstFlightService.Client">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesIFirstFlightService.#ctor(System.Net.Http.HttpClient,Refit.IRequestBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesIFirstFlightService.GetFlights(System.DateTime,System.Decimal,System.Int32,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesIFirstFlightService.Book(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesIFirstFlightService.AirTravelAggregatorAPI#Services#Interfaces#IFirstFlightService#GetFlights(System.DateTime,System.Decimal,System.Int32,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesIFirstFlightService.AirTravelAggregatorAPI#Services#Interfaces#IFirstFlightService#Book(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesISecondFlightService">
+            <inheritdoc />
+        </member>
+        <member name="P:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesISecondFlightService.Client">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesISecondFlightService.#ctor(System.Net.Http.HttpClient,Refit.IRequestBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesISecondFlightService.GetFlights(System.DateTime,AirTravelAggregatorAPI.Models.Enums.SortProperty,System.Decimal,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesISecondFlightService.Book(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesISecondFlightService.AirTravelAggregatorAPI#Services#Interfaces#ISecondFlightService#GetFlights(System.DateTime,AirTravelAggregatorAPI.Models.Enums.SortProperty,System.Decimal,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AirTravelAggregatorAPIServicesInterfacesISecondFlightService.AirTravelAggregatorAPI#Services#Interfaces#ISecondFlightService#Book(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

@@ -20,8 +20,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "CACHE_SIZE_LIMIT": "1073741824",
-        "RefitRoute__FirstFlightSevice": "https://localhost:7208",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
+        "RefitRoute__FirstFlightSevice": "https://firstflight.azurewebsites.net",
+        "RefitRoute__SecondFlightSevice": "https://secondflightservice.azurewebsites.net"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7195;http://localhost:5115"

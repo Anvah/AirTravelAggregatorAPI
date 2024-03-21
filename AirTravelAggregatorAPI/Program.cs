@@ -1,5 +1,7 @@
-
+using AirTravelAggregatorAPI.Configurations;
+using AirTravelAggregatorAPI.Configurations.Swagger;
 using AirTravelAggregatorAPI.Middleware;
+using Newtonsoft.Json.Converters;
 using Serilog;
 
 namespace AirTravelAggregatorAPI
@@ -12,14 +14,18 @@ namespace AirTravelAggregatorAPI
             Serilog.Debugging.SelfLog.Enable(Console.Out);
 
             Log.Logger = new LoggerConfiguration()
-               //.WriteTo.Console()
-               //.WriteTo.File("logs/log.json", rollingInterval: RollingInterval.Day) 
                .ReadFrom.Configuration(builder.Configuration)
                .CreateLogger();
 
-            Log.Information("Service start");
+            Log.Information("Configure services start");
             builder.Host.UseSerilog();
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.Converters.Add(new StringEnumConverter
+                {
+                    CamelCaseText = true
+                });
+            });
             builder.Services.ConfigureApplicationServices(builder.Configuration);
             builder.Services.ConfigureAuthentication(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +35,7 @@ namespace AirTravelAggregatorAPI
                 loggingBuilder.ClearProviders();
                 loggingBuilder.AddSerilog(dispose: true);
             });
+            Log.Information("Configure services success");
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -39,13 +46,12 @@ namespace AirTravelAggregatorAPI
             
             app.UseHttpsRedirection();
             app.UseMiddleware<ExceptionMiddleware>();
-            //app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-            
 
+            Log.Information("Build success");
             app.Run();
             Log.Information("Service stop");
 

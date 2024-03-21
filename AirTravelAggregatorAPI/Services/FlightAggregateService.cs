@@ -11,6 +11,7 @@ using AirTravelAggregatorAPI.Models.Enums;
 using System.Security.Cryptography.Xml;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace AirTravelAggregatorAPI.Services
 {
@@ -30,7 +31,22 @@ namespace AirTravelAggregatorAPI.Services
             _logger = logger;
             this.memoryCache = memoryCache;
         }
-        public async Task<IEnumerable<Flight>> GetFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
+        /// <summary>
+        /// Аггрегация данных о билетах из разных источников и кэширование результата
+        /// </summary>
+        ///<remarks>
+        /// Для более эффективного использования кэша лучше отправлять в сервисы запросы без фильтрации.
+        /// Пользователи часто могут запрашивать данные о билетах на одни и те же даты с разными фильтрами и сортировкой
+        /// соответственно в данной ситуации кэшировать лучше данные, где ключом будет дата перелета,
+        /// а фильтрации и сортировки выполнять на стороне приложения
+        /// </remarks>
+        /// <param name="date">Дата вылета</param>
+        /// <param name="sortProperty">Свойство, по которому будет сортироваться объект</param>
+        /// <param name="maxPrice">Максимальная цена</param>
+        /// <param name="airlineName">Название авиалинии перевозчика</param>
+        /// <param name="maxTransfersCount">Максимальное количество пересадок</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Flight>> GetFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
         {
             _logger.LogInformation("start getting flights with params: date: {@date}, sort: {@sortProperty}, maxPrice: {@maxPrice}, airlineName: {@airlineName}, maxTransfersCount: {@maxTransfersCount}"
                 ,date.Date, sortProperty.ToString(), maxPrice, airlineName, maxTransfersCount);
@@ -45,9 +61,11 @@ namespace AirTravelAggregatorAPI.Services
             }
             else
             {
-                _logger.LogInformation("data not found in cache, strating requests");
-                var fristFlights = await GetFirstServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
-                var secondFlights = await GetSecondServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
+                _logger.LogInformation("data not found in cache, starting requests");
+                //var fristFlights = await GetFirstServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
+                //var secondFlights = await GetSecondServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
+                var fristFlights = await GetFirstServiceFlights(cancellationToken, date);
+                var secondFlights = await GetSecondServiceFlights(cancellationToken, date);
                 flights = fristFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));
                 flights = flights.Concat(secondFlights.Select(f => _mapper.Map<SecondFlight, Flight>(f)));
                 memoryCache.Set(date, flights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
@@ -58,7 +76,18 @@ namespace AirTravelAggregatorAPI.Services
             _logger.LogInformation("fligts aggregate success");
             return flights;
         }
-        public async Task<Flight> Book(CancellationToken cancellationToken, string originalId, FlightSourse sourse)
+        /// <summary>
+        /// Бронирование билета
+        /// </summary>
+        ///<remarks>
+        /// Для бранирование в зависимотсти от парамтра sourse
+        /// Отправляется запрос в соответствующий источник
+        /// </remarks>
+        /// <param name="originalId">Id билета из оригинального источника</param>
+        /// <param name="sourse">Источник, из которого получен билет</param>
+        /// <param name="cancellationToken">Токен для отмены операции</param>
+        /// <returns></returns>
+        public async Task<Flight> Book(string originalId, FlightSourse sourse, CancellationToken cancellationToken)
         {
             _logger.LogInformation("start booking flight from {@sourse} with id: {@originalId}", sourse.ToString(), originalId);
             switch (sourse)
@@ -67,7 +96,7 @@ namespace AirTravelAggregatorAPI.Services
                     Flight flight = null;
                     try
                     {
-                        var firstFlight = await _firstFlightService.Book(originalId, cancellationToken);
+                        var firstFlight = await _firstFlightService.Book(originalId);
                         flight = _mapper.Map<FirstFlight, Flight>(firstFlight);
                     }
                     catch (OperationCanceledException)
@@ -76,20 +105,20 @@ namespace AirTravelAggregatorAPI.Services
                     return flight;
                         
                 case FlightSourse.SecondFlightService:
-                    var secondFlight = await _secondFlightService.Book(originalId, cancellationToken);
+                    var secondFlight = await _secondFlightService.Book(originalId);
                     return _mapper.Map<SecondFlight, Flight>(secondFlight);
                 default:
                     return null;
             }
 
         }
-        private async Task<IEnumerable<FirstFlight>> GetFirstServiceFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
+        private async Task<IEnumerable<FirstFlight>> GetFirstServiceFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
         {
             _logger.LogInformation("start getting flights from FirstFlightService");
             IEnumerable<FirstFlight> flights;
             try
             {
-                var apiResponse = await _firstFlightService.GetFlights(cancellationToken, date, maxPrice, maxTransfersCount);
+                var apiResponse = await _firstFlightService.GetFlights(date, maxPrice, maxTransfersCount, cancellationToken);
                 flights = apiResponse.Content != null ? apiResponse.Content : new List<FirstFlight>();
                 _logger.LogInformation("firstFligt service request success");
             }
@@ -100,13 +129,13 @@ namespace AirTravelAggregatorAPI.Services
             }
             return flights;
         }
-        private async Task<IEnumerable<SecondFlight>> GetSecondServiceFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
-        {
+        private async Task<IEnumerable<SecondFlight>> GetSecondServiceFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
+{
             _logger.LogInformation("start getting flights from SecondFlightService");
             IEnumerable<SecondFlight> flights;
             try
             {
-                var apiResponse = await _secondFlightService.GetFlights(cancellationToken, date, sortProperty, maxPrice);
+                var apiResponse = await _secondFlightService.GetFlights(date, sortProperty, maxPrice, cancellationToken);
                 flights = apiResponse.Content != null ? apiResponse.Content :  new List<SecondFlight>();
                 flights = flights.Where(f => f.Transfres.Length < maxTransfersCount);
                 _logger.LogInformation("secondFligtService request success");
@@ -118,6 +147,6 @@ namespace AirTravelAggregatorAPI.Services
             }
             return flights;
         }
-       
+
     }
 }

@@ -15,7 +15,7 @@ namespace AirTravelAggregatorAPI.Mapper
         {
 
             config.NewConfig<FirstFlight, Flight>()
-             .Map(dest => dest.Id, src => src.Id)
+             .Map(dest => dest.Id, src => Guid.NewGuid())
              .Map(dest => dest.OriginalId, src => src.Id)
              .Map(dest => dest.Airline, src => new Airline { Name = src.Airline })
              .Map(dest => dest.ArrivalPoint, src => CreateDestinationFromFirstFlightTransfer(src.ArrivalPoint))
@@ -27,13 +27,14 @@ namespace AirTravelAggregatorAPI.Mapper
 
 
             config.NewConfig<SecondFlight, Flight>()
-                .Map(dest => dest.OriginalId, src => src.Id)
-                .Map(agf => agf.Airline, f => new Airline { Name = f.Airline })
-                .Map(agf => agf.Price, f => f.Price)
-                .Map(agf => agf.DeparturePoint, f => new Destination {AirportName = f.DepartureAirport, CityName = f.DepartureCity, CountryName = f.DepartureCountry, DepartureTime = DateTime.Parse(f.DepartureTime) })
-                .Map(agf => agf.ArrivalPoint, f => new Destination { AirportName = f.ArrivalAirport, CityName = f.ArrivalCity, CountryName = f.ArrivalCountry, ArrivalTime = DateTime.Parse(f.ArrivalTime) })
-                .Map(agf => agf.Transfers, f => CreateDestinationsFroSecondFlightTransfer(f.Transfres, f.TransfersArivalDateTime, f.TransfersDepartureDateTime))
-                .Map(agf => agf.Baggage, f => new Baggage { IsAvailable = f.IsBaggageAvaible, Price = f.BaggagePrice })
+                .Map(dest => dest.Id, src => Guid.NewGuid())
+                .Map(dest => dest.OriginalId, src => src.Id)              
+                .Map(dest => dest.Airline, src => new Airline { Name = src.Airline })
+                .Map(dest => dest.Price, src => src.Price)
+                .Map(dest => dest.DeparturePoint, src => new Destination {AirportName = src.DepartureAirport, CityName = src.DepartureCity, CountryName = src.DepartureCountry, DepartureTime = DateTime.Parse(src.DepartureTime) })
+                .Map(dest => dest.ArrivalPoint, src => new Destination { AirportName = src.ArrivalAirport, CityName = src.ArrivalCity, CountryName = src.ArrivalCountry, ArrivalTime = DateTime.Parse(src.ArrivalTime) })
+                .Map(dest => dest.Transfers, src => CreateDestinationsFroSecondFlightTransfer(src.Transfres, src.TransfersArivalDateTime, src.TransfersDepartureDateTime))
+                .Map(dest => dest.Baggage, src => new Baggage { IsAvailable = src.IsBaggageAvaible, Price = src.BaggagePrice })
                 .Map(dest => dest.Sourse, src => FlightSourse.SecondFlightService);
                 
         }
@@ -71,12 +72,6 @@ namespace AirTravelAggregatorAPI.Mapper
                 {
                     return null;
                 }
-                /*DateTime arrivalDate;
-                bool isArrDateCovert = DateTime.TryParse(AirportCityCountry[i],out arrivalDate);
-                DateTime departureDate;
-                bool isDepDateCovert = DateTime.TryParse(departureDates[i],out departureDate);
-                if(!(isArrDateCovert || isArrDateCovert))
-                    return null;*/
                 destinations[i] = new Destination
                 {
                     AirportName = AirportCityCountry[0],

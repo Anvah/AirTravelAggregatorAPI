@@ -39,8 +39,8 @@ namespace AirTravelAggregatorTests
 
             // Assert
             Assert.Equal(4, flights.Count());
-            Assert.Contains(flights, flight => flight.Id == "NYC-LON-PAR-1");
-            Assert.Contains(flights, flight => flight.Id== "SU123");
+            Assert.Contains(flights, flight => flight.OriginalId == "NYC-LON-PAR-1");
+            Assert.Contains(flights, flight => flight.OriginalId == "SU123");
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace AirTravelAggregatorTests
             var service = new FlightAggregateService(firstFlightServiceMock, null, mapper, loggerMock.Object, memoryCache.Object);
 
             // Act
-            var bookedFlight = await service.Book(cancellationToken, originalId, source);
+            var bookedFlight = await service.Book(originalId, source, cancellationToken);
 
             // Assert
             Assert.NotNull(bookedFlight);
@@ -88,7 +88,7 @@ namespace AirTravelAggregatorTests
             var service = new FlightAggregateService(null, secondFlightServiceMock, mapper, loggerMock.Object, memoryCache.Object);
 
             // Act
-            var bookedFlight = await service.Book(cancellationToken, originalId, source);
+            var bookedFlight = await service.Book(originalId, source, cancellationToken);
 
             // Assert
             Assert.NotNull(bookedFlight);

@@ -201,14 +201,14 @@ namespace AirTravelAggregatorAPI.Services.TestServices
                     BaggagePrice = 25.00m
                 }
             };
-        async public Task<SecondFlight> Book(string Id, CancellationToken cancellationToken)
+        async public Task<SecondFlight> Book(string Id, CancellationToken cancellationToken = default)
         {
             var flight = secondFlights.FirstOrDefault(f => f.Id == Id);
             if (flight != null)
                 flight.IsBooked = true;
             return flight;
         }
-        public async Task<ApiResponse<IEnumerable<SecondFlight>>> GetFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue)
+        public async Task<ApiResponse<IEnumerable<SecondFlight>>> GetFlights(DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, CancellationToken cancellationToken = default)
         {
             var sortedFlight = secondFlights
                 .Where(f => DateTime.Parse(f.DepartureTime).Date == date.Date
