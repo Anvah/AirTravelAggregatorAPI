@@ -26,14 +26,14 @@ https://flightagrregatorservice.azurewebsites.net/fligts/get?date=2024-03-16&sor
 https://flightagrregatorservice.azurewebsites.net/fligts/book/EK753/SecondFlightService
 
 Авторизация:
-https://flightserviceauthservice.azurewebsites.net//api/Auth/authenticate
+https://flightserviceauthservice.azurewebsites.net/api/Auth/authenticate
 {
     "username": "user1",
     "password": "password1"
 }
 
 Создание аккаунта: 
-https://flightserviceauthservice.azurewebsites.net//api/Auth/createAccount 
+https://flightserviceauthservice.azurewebsites.net/api/Auth/createAccount 
 { 
     "username": "user3", 
     "password": "password3"
