@@ -1,9 +1,7 @@
 ﻿using AirTravelAggregatorAPI.Services;
 using AirTravelAggregatorAPI.Services.Interfaces;
 using AirTravelAggregatorAPI.Services.TestServices;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Refit;
-using System.Reflection;
 using Mapster;
 using MapsterMapper;
 using System.Linq.Expressions;
@@ -12,12 +10,7 @@ using AirTravelAggregatorAPI.Mapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.OpenApi.Models;
-using System.Text.Json;
 using Serilog;
-using AirTravelAggregatorAPI.Models.ResultModels;
-using Microsoft.AspNetCore.Http;
-using System;
 
 namespace AirTravelAggregatorAPI.Configurations
 {

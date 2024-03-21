@@ -13,6 +13,7 @@
             <param name="maxPrice">Максимальная цена</param>
             <param name="airlineName">Название авиалинии перевозчика</param>
             <param name="maxTransfersCount">Максимальное количество пересадок</param>
+            <param name="cancellationToken">Токен для отмены операции</param>
             <returns></returns>
         </member>
         <member name="M:AirTravelAggregatorAPI.Controllers.FlightController.Book(System.String,AirTravelAggregatorAPI.Models.Enums.FlightSourse,System.Threading.CancellationToken)">
@@ -21,6 +22,7 @@
             </summary>
             <param name="originalId">Id билета из оригинального источника</param>
             <param name="sourse">Источник, из которого получен билет</param>
+            /// <param name="cancellationToken">Токен для отмены операции</param>
             <returns></returns>
         </member>
         <member name="M:AirTravelAggregatorAPI.Services.FlightAggregateService.GetFlights(System.Threading.CancellationToken,System.DateTime,AirTravelAggregatorAPI.Models.Enums.SortProperty,System.Decimal,System.String,System.Int32)">
@@ -38,6 +40,19 @@
              <param name="maxPrice">Максимальная цена</param>
              <param name="airlineName">Название авиалинии перевозчика</param>
              <param name="maxTransfersCount">Максимальное количество пересадок</param>
+             <returns></returns>
+        </member>
+        <member name="M:AirTravelAggregatorAPI.Services.FlightAggregateService.Book(System.String,AirTravelAggregatorAPI.Models.Enums.FlightSourse,System.Threading.CancellationToken)">
+             <summary>
+             Бронирование билета
+             </summary>
+            <remarks>
+             Для бранирование в зависимотсти от парамтра sourse
+             Отправляется запрос в соответствующий источник
+             </remarks>
+             <param name="originalId">Id билета из оригинального источника</param>
+             <param name="sourse">Источник, из которого получен билет</param>
+             <param name="cancellationToken">Токен для отмены операции</param>
              <returns></returns>
         </member>
         <member name="T:Refit.Implementation.Generated">

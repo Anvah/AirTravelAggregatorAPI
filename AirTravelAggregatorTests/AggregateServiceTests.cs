@@ -17,7 +17,7 @@ namespace AirTravelAggregatorTests
             var date = DateTime.UtcNow;
             var sortProperty = SortProperty.ByPrice;
             var maxPrice = decimal.MaxValue;
-            var airlineName = "Some Airline";
+            var airlineName = "";
             var maxTransfersCount = int.MaxValue;
 
             var firstFlightServiceMock = new FirstFlightTestService();

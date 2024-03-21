@@ -1,8 +1,5 @@
-﻿using AirTravelAggregatorAPI.Models.AggregatedModels;
-using AirTravelAggregatorAPI.Models.Enums;
-using AirTravelAggregatorAPI.Models.FirstServiceModels;
+﻿using AirTravelAggregatorAPI.Models.FirstServiceModels;
 using Refit;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AirTravelAggregatorAPI.Services.Interfaces
 {
