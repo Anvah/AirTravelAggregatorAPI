@@ -1,11 +1,6 @@
-﻿using AirTravelAggregatorAPI.Models.AggregatedModels;
-using AirTravelAggregatorAPI.Models.Enums;
-using AirTravelAggregatorAPI.Models.FirstServiceModels;
-using AirTravelAggregatorAPI.Models.SecondServiceModels;
+﻿using AirTravelAggregatorAPI.Models.FirstServiceModels;
 using AirTravelAggregatorAPI.Services.Interfaces;
 using Refit;
-using System.Security.Cryptography.Xml;
-using System.Threading;
 
 namespace AirTravelAggregatorAPI.Services.TestServices
 {

@@ -1,6 +1,5 @@
 ﻿using AirTravelAggregatorAPI.Models.AggregatedModels;
 using AirTravelAggregatorAPI.Models.Enums;
-using System.Threading;
 
 namespace AirTravelAggregatorAPI.Services.Interfaces
 {

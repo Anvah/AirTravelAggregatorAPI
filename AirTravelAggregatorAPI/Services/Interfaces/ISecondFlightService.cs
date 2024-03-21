@@ -1,5 +1,4 @@
 ﻿using AirTravelAggregatorAPI.Models.Enums;
-using AirTravelAggregatorAPI.Models.FirstServiceModels;
 using AirTravelAggregatorAPI.Models.SecondServiceModels;
 using Refit;
 

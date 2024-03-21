@@ -1,5 +1,4 @@
 ﻿using AirTravelAggregatorAPI.Models.ResultModels;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Security.Authentication;

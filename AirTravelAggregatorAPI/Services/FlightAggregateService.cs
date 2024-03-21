@@ -2,16 +2,9 @@
 using AirTravelAggregatorAPI.Models.FirstServiceModels;
 using AirTravelAggregatorAPI.Models.SecondServiceModels;
 using AirTravelAggregatorAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Mapster;
-using Refit;
 using MapsterMapper;
-using System.ComponentModel;
 using AirTravelAggregatorAPI.Models.Enums;
-using System.Security.Cryptography.Xml;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
-using System.Threading;
 
 namespace AirTravelAggregatorAPI.Services
 {
@@ -60,8 +53,6 @@ namespace AirTravelAggregatorAPI.Services
             else
             {
                 _logger.LogInformation("data not found in cache, starting requests");
-                //var fristFlights = await GetFirstServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
-                //var secondFlights = await GetSecondServiceFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
                 var fristFlights = await GetFirstServiceFlights(cancellationToken, date);
                 var secondFlights = await GetSecondServiceFlights(cancellationToken, date);
                 flights = fristFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));

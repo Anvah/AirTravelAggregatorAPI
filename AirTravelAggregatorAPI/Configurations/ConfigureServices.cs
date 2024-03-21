@@ -34,18 +34,6 @@ namespace AirTravelAggregatorAPI.Configurations
             {
                 services.AddRefitEndpoints(configuration);
             }
-            /*string? cacheSizeLimitStr = Environment.GetEnvironmentVariable("CACHE_SIZE_LIMIT");
-            long cacheSizeLimit = int.MaxValue;
-            if (cacheSizeLimitStr == null)
-            {
-                Log.Logger.Error("failed get environment variable: CACHE_SIZE_LIMIT");
-            }
-            else
-            {
-                if (long.TryParse(cacheSizeLimitStr, out cacheSizeLimit))
-                    Log.Logger.Error("failed get int value from environment variable: CACHE_SIZE_LIMIT");
-            }
-            services.AddMemoryCache(c => c.SizeLimit = cacheSizeLimit);*/
             services.AddMemoryCache();
             services.AddSingleton(GetConfigureMappinfConfig());
             services.AddScoped<IMapper, ServiceMapper>();
