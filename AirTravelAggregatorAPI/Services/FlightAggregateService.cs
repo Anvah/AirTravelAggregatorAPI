@@ -93,19 +93,19 @@ namespace AirTravelAggregatorAPI.Services
             switch (sourse)
             {
                 case FlightSourse.FirstFlightService:
-                    Flight flight = null;
-                    try
+                    var firstFlight = await _firstFlightService.Book(originalId);
+                    if(firstFlight == null)
                     {
-                        var firstFlight = await _firstFlightService.Book(originalId);
-                        flight = _mapper.Map<FirstFlight, Flight>(firstFlight);
+                        return null;
                     }
-                    catch (OperationCanceledException)
-                    {
-                    }
-                    return flight;
-                        
+                    return _mapper.Map<FirstFlight, Flight>(firstFlight);
+
                 case FlightSourse.SecondFlightService:
                     var secondFlight = await _secondFlightService.Book(originalId);
+                    if (secondFlight == null)
+                    {
+                        return null;
+                    }
                     return _mapper.Map<SecondFlight, Flight>(secondFlight);
                 default:
                     return null;
