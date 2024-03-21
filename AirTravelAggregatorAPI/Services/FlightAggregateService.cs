@@ -56,8 +56,6 @@ namespace AirTravelAggregatorAPI.Services
                 _logger.LogInformation("data found in cache");
                 if(flights == null)
                     return Enumerable.Empty<Flight>();
-                flights.Where(f => f.Price < maxPrice
-                        && f.Transfers.Length < maxTransfersCount);
             }
             else
             {
@@ -71,6 +69,8 @@ namespace AirTravelAggregatorAPI.Services
                 memoryCache.Set(date, flights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
             }
             flights = flights
+                .Where(f => f.Price < maxPrice
+                        && f.Transfers.Length < maxTransfersCount)
                 .Where(f => f.Airline.Name.ToLower().Contains(airlineName.ToLower()))
                 .OrderBy(f => sortProperty == SortProperty.ByPrice ? f.Price : f.Transfers.Count());
             _logger.LogInformation("fligts aggregate success");
