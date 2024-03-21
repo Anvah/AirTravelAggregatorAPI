@@ -31,7 +31,9 @@ https://flightserviceauthservice.azurewebsites.net//api/Auth/authenticate
     "username": "user1",
     "password": "password1"
 }
-Создание аккаунта: https://flightserviceauthservice.azurewebsites.net//api/Auth/createAccount 
+
+Создание аккаунта: 
+https://flightserviceauthservice.azurewebsites.net//api/Auth/createAccount 
 { 
     "username": "user3", 
     "password": "password3"
