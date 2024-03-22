@@ -38,7 +38,7 @@ namespace AirTravelAggregatorAPI.Controllers
         /// <param name="sourse">Источник, из которого получен билет</param>
         /// /// <param name="cancellationToken">Токен для отмены операции</param>
         /// <returns></returns>
-        //[Authorize]
+        [Authorize]
         [HttpPost("/fligts/book/{originalId}/{sourse}")]
         public async Task<ActionResult<AirTravelApiResponse<Flight>>> Book(string originalId, FlightSourse sourse, CancellationToken cancellationToken)
         {
