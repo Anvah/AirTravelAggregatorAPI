@@ -13,7 +13,7 @@
 Примеры успешых запросов:
 
 - Получение билетов:
-https://flightagrregatorservice.azurewebsites.net/fligts/get?date=2024-03-16&sortProperty=ByPrice&maxPrice=15000&airlineName=Emirates&maxTransfersCount=3
+https://flightagrregatorservice.azurewebsites.net/fligts/get?date=2024-03-16&onlyNotBooked=false&sortProperty=ByPrice&maxPrice=15000&airlineName=Emirates&maxTransfersCount=3
 - Бронирование:
 https://flightagrregatorservice.azurewebsites.net/fligts/book/EK753/SecondFlightService
 ```
