@@ -31,12 +31,12 @@ body:
 }
 
 Создание аккаунта: 
-https://flightserviceauthservice.azurewebsites.net/api/Auth/createAccount 
-body:
-{ 
-    "username": "user3", 
-    "password": "password3"
-}
+    https://flightserviceauthservice.azurewebsites.net/api/Auth/createAccount 
+    body:
+    { 
+        "username": "user3", 
+        "password": "password3"
+    }
 Существующие сущьности, которые можно использовать для запросов:
                 new FirstFlight
                 {
