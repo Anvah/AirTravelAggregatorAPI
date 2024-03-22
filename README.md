@@ -48,7 +48,7 @@ body:
 Сущнности котырые иожно получить в результате запросов:
 - Билеты из первого первого сервисa:
 ```
-new FirstFlight
+                new FirstFlight
                 {
                     Id = "NYC-LON-PAR-1",
                     Airline = "Example Airways",
@@ -135,7 +135,7 @@ new FirstFlight
 ```
 - Билеты из второго первого сервисa:
 ```
-            new SecondFlight
+                new SecondFlight
                 {
                     Id = "SU123",
                     Airline = "Aeroflot",
