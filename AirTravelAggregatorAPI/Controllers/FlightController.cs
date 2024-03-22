@@ -26,9 +26,9 @@ namespace AirTravelAggregatorAPI.Controllers
         /// <returns></returns>
         //[Authorize]
         [HttpGet("/fligts/get")]
-        public async Task<ActionResult<AirTravelApiResponse<IEnumerable<Flight>>>> GetFlights(DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<AirTravelApiResponse<IEnumerable<Flight>>>> GetFlights(DateTime date, bool onlyNotBooked = true, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue, CancellationToken cancellationToken = default)
         {
-            var flights = await _flightAggregatorService.GetFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
+            var flights = await _flightAggregatorService.GetFlights(cancellationToken, date, onlyNotBooked, sortProperty, maxPrice, airlineName, maxTransfersCount);
             return GetResponse(flights);
         }
         /// <summary>
@@ -38,7 +38,7 @@ namespace AirTravelAggregatorAPI.Controllers
         /// <param name="sourse">Источник, из которого получен билет</param>
         /// /// <param name="cancellationToken">Токен для отмены операции</param>
         /// <returns></returns>
-        [Authorize]
+        //[Authorize]
         [HttpPost("/fligts/book/{originalId}/{sourse}")]
         public async Task<ActionResult<AirTravelApiResponse<Flight>>> Book(string originalId, FlightSourse sourse, CancellationToken cancellationToken)
         {

@@ -39,7 +39,7 @@ namespace AirTravelAggregatorAPI.Services
         /// <param name="airlineName">Название авиалинии перевозчика</param>
         /// <param name="maxTransfersCount">Максимальное количество пересадок</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Flight>> GetFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
+        public async Task<IEnumerable<Flight>> GetFlights(CancellationToken cancellationToken, DateTime date, bool onlyNotBooked = true, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)
         {
             _logger.LogInformation("start getting flights with params: date: {@date}, sort: {@sortProperty}, maxPrice: {@maxPrice}, airlineName: {@airlineName}, maxTransfersCount: {@maxTransfersCount}"
                 ,date.Date, sortProperty.ToString(), maxPrice, airlineName, maxTransfersCount);
@@ -61,8 +61,9 @@ namespace AirTravelAggregatorAPI.Services
             }
             flights = flights
                 .Where(f => f.Price < maxPrice
-                        && f.Transfers.Length < maxTransfersCount)
-                .Where(f => f.Airline.Name.ToLower().Contains(airlineName.ToLower()))
+                        && f.Transfers.Length < maxTransfersCount
+                        && f.Airline.Name.ToLower().Contains(airlineName.ToLower())
+                        && !(onlyNotBooked && f.IsBooked))
                 .OrderBy(f => sortProperty == SortProperty.ByPrice ? f.Price : f.Transfers.Count());
             _logger.LogInformation("fligts aggregate success");
             return flights;

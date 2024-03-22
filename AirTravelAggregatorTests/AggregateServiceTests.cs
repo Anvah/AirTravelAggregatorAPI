@@ -16,6 +16,7 @@ namespace AirTravelAggregatorTests
             var cancellationToken = CancellationToken.None;
             var date = DateTime.UtcNow;
             var sortProperty = SortProperty.ByPrice;
+            bool onlyNotBooked = false;
             var maxPrice = decimal.MaxValue;
             var airlineName = "";
             var maxTransfersCount = int.MaxValue;
@@ -35,7 +36,7 @@ namespace AirTravelAggregatorTests
             var service = new FlightAggregateService(firstFlightServiceMock, secondFlightServiceMock, mapper, loggerMock.Object, memoryCache.Object);
 
             // Act
-            var flights = await service.GetFlights(cancellationToken, date, sortProperty, maxPrice, airlineName, maxTransfersCount);
+            var flights = await service.GetFlights(cancellationToken, date, onlyNotBooked, sortProperty, maxPrice, airlineName, maxTransfersCount);
 
             // Assert
             Assert.Equal(4, flights.Count());
