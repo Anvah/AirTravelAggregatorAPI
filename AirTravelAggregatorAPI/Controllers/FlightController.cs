@@ -18,6 +18,7 @@ namespace AirTravelAggregatorAPI.Controllers
         /// Получение билетов
         /// </summary>
         /// <param name="date">Дата вылета</param>
+        /// <param name="onlyNotBooked">Показывать ли только не забронированные билеты</param>
         /// <param name="sortProperty">Свойство, по которому будет сортироваться объект</param>
         /// <param name="maxPrice">Максимальная цена</param>
         /// <param name="airlineName">Название авиалинии перевозчика</param>
