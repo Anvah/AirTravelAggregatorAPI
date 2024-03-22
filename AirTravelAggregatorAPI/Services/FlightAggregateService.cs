@@ -84,15 +84,17 @@ namespace AirTravelAggregatorAPI.Services
             switch (sourse)
             {
                 case FlightSourse.FirstFlightService:
-                    var firstFlight = await _firstFlightService.Book(originalId);
-                    if(firstFlight == null)
+                    var firstFlightResponse = await _firstFlightService.Book(originalId);
+                    var firstFlight = firstFlightResponse.Content;
+                    if (firstFlight == null)
                     {
                         return null;
                     }
                     return _mapper.Map<FirstFlight, Flight>(firstFlight);
 
                 case FlightSourse.SecondFlightService:
-                    var secondFlight = await _secondFlightService.Book(originalId);
+                    var secondFlightResponse = await _secondFlightService.Book(originalId);
+                    var secondFlight = secondFlightResponse.Content;
                     if (secondFlight == null)
                     {
                         return null;

@@ -9,6 +9,6 @@ namespace AirTravelAggregatorAPI.Services.Interfaces
         [Get("/getFlights")]
         Task<ApiResponse<IEnumerable<SecondFlight>>> GetFlights(DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, CancellationToken cancellationToken = default);
         [Post("/bookFlight/{id}")]
-        Task<SecondFlight> Book(string id, CancellationToken cancellationToken = default);
+        Task<ApiResponse<SecondFlight>> Book(string id, CancellationToken cancellationToken = default);
     }
 }

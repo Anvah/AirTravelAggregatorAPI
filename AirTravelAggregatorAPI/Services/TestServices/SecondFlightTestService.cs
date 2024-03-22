@@ -1,4 +1,5 @@
 ﻿using AirTravelAggregatorAPI.Models.Enums;
+using AirTravelAggregatorAPI.Models.FirstServiceModels;
 using AirTravelAggregatorAPI.Models.SecondServiceModels;
 using AirTravelAggregatorAPI.Services.Interfaces;
 using Refit;
@@ -200,12 +201,13 @@ namespace AirTravelAggregatorAPI.Services.TestServices
                     BaggagePrice = 25.00m
                 }
             };
-        async public Task<SecondFlight> Book(string Id, CancellationToken cancellationToken = default)
+        async public Task<ApiResponse<SecondFlight>> Book(string Id, CancellationToken cancellationToken = default)
         {
             var flight = secondFlights.FirstOrDefault(f => f.Id == Id);
-            if (flight != null)
-                flight.IsBooked = true;
-            return flight;
+            if (flight == null || flight.IsBooked == true)
+                return new ApiResponse<SecondFlight>(new HttpResponseMessage(), null, new RefitSettings()); ;
+            flight.IsBooked = true;
+            return new ApiResponse<SecondFlight>(new HttpResponseMessage(), flight, new RefitSettings());
         }
         public async Task<ApiResponse<IEnumerable<SecondFlight>>> GetFlights(DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, CancellationToken cancellationToken = default)
         {

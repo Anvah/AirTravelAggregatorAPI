@@ -1,4 +1,5 @@
 ﻿using AirTravelAggregatorAPI.Models.FirstServiceModels;
+using AirTravelAggregatorAPI.Models.SecondServiceModels;
 using AirTravelAggregatorAPI.Services.Interfaces;
 using Refit;
 
@@ -95,12 +96,13 @@ namespace AirTravelAggregatorAPI.Services.TestServices
 
 
             };
-        async public Task<FirstFlight> Book(string Id, CancellationToken cancellationToken = default)
+        async public Task<ApiResponse<FirstFlight>> Book(string Id, CancellationToken cancellationToken = default)
         {
             var flight = firstFlights.FirstOrDefault(f => f.Id == Id);
-            if(flight != null)
-                flight.IsBooked = true;
-            return flight;
+            if (flight == null || flight.IsBooked == true)
+                return new ApiResponse<FirstFlight>(new HttpResponseMessage(), null, new RefitSettings());
+            flight.IsBooked = true;
+            return new ApiResponse<FirstFlight>(new HttpResponseMessage(), flight, new RefitSettings());
         }
 
         public async Task<ApiResponse<IEnumerable<FirstFlight>>> GetFlights(DateTime date, decimal maxPrice = decimal.MaxValue, int maxTransfersCount = int.MaxValue, CancellationToken cancellationToken = default)
