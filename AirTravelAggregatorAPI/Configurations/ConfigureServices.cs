@@ -16,6 +16,7 @@ namespace AirTravelAggregatorAPI.Configurations
 {
     public static class ConfigureServices
     {
+        const double TIMEOUT_SEC = 30;
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
 
@@ -81,13 +82,13 @@ namespace AirTravelAggregatorAPI.Configurations
                 .ConfigureHttpClient(c =>
                 {
                     c.BaseAddress = new Uri(routes.FirstFlightSevice);
-                    c.Timeout = TimeSpan.FromSeconds(10);
+                    c.Timeout = TimeSpan.FromSeconds(TIMEOUT_SEC);
                 });
             services.AddRefitClient<ISecondFlightService>()
                 .ConfigureHttpClient(c =>
                 {
                     c.BaseAddress = new Uri(routes.SecondFlightSevice);
-                    c.Timeout = TimeSpan.FromSeconds(10);
+                    c.Timeout = TimeSpan.FromSeconds(TIMEOUT_SEC);
                 });
 
             return services;

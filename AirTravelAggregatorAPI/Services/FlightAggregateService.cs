@@ -132,7 +132,6 @@ namespace AirTravelAggregatorAPI.Services
             {
                 var apiResponse = await _secondFlightService.GetFlights(date, sortProperty, maxPrice, cancellationToken);
                 flights = apiResponse.Content != null ? apiResponse.Content :  new List<SecondFlight>();
-                flights = flights.Where(f => f.Transfres.Length < maxTransfersCount);
                 _logger.LogInformation("secondFligtService request success");
             }
             catch (OperationCanceledException)
