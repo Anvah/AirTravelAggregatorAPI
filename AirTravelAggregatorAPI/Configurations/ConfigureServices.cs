@@ -19,7 +19,7 @@ namespace AirTravelAggregatorAPI.Configurations
         const double TIMEOUT_SEC = 30;
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddCors();
             services.AddTransient<IFlightAggregatorService, FlightAggregateService>();
             string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (environment == null)
