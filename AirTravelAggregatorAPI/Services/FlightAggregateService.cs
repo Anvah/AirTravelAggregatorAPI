@@ -45,7 +45,7 @@ namespace AirTravelAggregatorAPI.Services
             _logger.LogInformation("start getting flights with params: date: {@date}, sort: {@sortProperty}, maxPrice: {@maxPrice}, airlineName: {@airlineName}, maxTransfersCount: {@maxTransfersCount}"
                 ,date.Date, sortProperty.ToString(), maxPrice, airlineName, maxTransfersCount);
             IEnumerable<Flight> flights;
-            if(memoryCache.TryGetValue($"{date}{onlyNotBooked}", out flights))
+            if(memoryCache.TryGetValue($"{date}", out flights))
             {
                 _logger.LogInformation("data found in cache");
                 if(flights == null)
@@ -58,7 +58,7 @@ namespace AirTravelAggregatorAPI.Services
                 var secondFlights = await GetSecondServiceFlights(cancellationToken, date);
                 flights = fristFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));
                 flights = flights.Concat(secondFlights.Select(f => _mapper.Map<SecondFlight, Flight>(f)));
-                memoryCache.Set($"{date}{onlyNotBooked}", flights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
+                memoryCache.Set($"{date}", flights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
             }
             flights = flights
                 .Where(f => f.Price < maxPrice
