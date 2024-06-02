@@ -3,7 +3,7 @@
 namespace AirTravelAggregatorAPI.Models.Enums
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum FlightSourse
+    public enum FlightSource
     {
         FirstFlightService,
         SecondFlightService

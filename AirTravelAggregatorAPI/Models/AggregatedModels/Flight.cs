@@ -14,7 +14,7 @@ namespace AirTravelAggregatorAPI.Models.AggregatedModels
         public decimal Price { get; set; }
         public Baggage Baggage { get; set; }
         public bool IsBooked { get; set; }
-        public FlightSourse Sourse { get; set; }
+        public FlightSource Source { get; set; }
 
     }
 }

@@ -36,14 +36,14 @@ namespace AirTravelAggregatorAPI.Controllers
         /// Бронирование билета
         /// </summary>
         /// <param name="originalId">Id билета из оригинального источника</param>
-        /// <param name="sourse">Источник, из которого получен билет</param>
+        /// <param name="source">Источник, из которого получен билет</param>
         /// /// <param name="cancellationToken">Токен для отмены операции</param>
         /// <returns></returns>
         [Authorize]
         [HttpPost("/fligts/book/{originalId}/{sourse}")]
-        public async Task<ActionResult<AirTravelApiResponse<Flight>>> Book(string originalId, FlightSourse sourse, CancellationToken cancellationToken)
+        public async Task<ActionResult<AirTravelApiResponse<Flight>>> Book(string originalId, FlightSource source, CancellationToken cancellationToken)
         {
-            var bookedFlight = await _flightAggregatorService.Book(originalId, sourse, cancellationToken);
+            var bookedFlight = await _flightAggregatorService.Book(originalId, source, cancellationToken);
             return GetResponse(bookedFlight);
         }
 

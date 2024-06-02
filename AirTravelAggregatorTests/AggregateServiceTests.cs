@@ -50,7 +50,7 @@ namespace AirTravelAggregatorTests
             // Arrange
             var cancellationToken = CancellationToken.None;
             var originalId = "NYC-LON-PAR-1";
-            var source = FlightSourse.FirstFlightService;
+            var source = FlightSource.FirstFlightService;
             var firstFlightServiceMock = new FirstFlightTestService();
 
             var config = new TypeAdapterConfig();
@@ -75,7 +75,7 @@ namespace AirTravelAggregatorTests
             // Arrange
             var cancellationToken = CancellationToken.None;
             var originalId = "SU123";
-            var source = FlightSourse.SecondFlightService;
+            var source = FlightSource.SecondFlightService;
             var secondFlightServiceMock = new SecondFlightTestService();
 
             var config = new TypeAdapterConfig();

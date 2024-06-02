@@ -7,8 +7,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "CACHE_SIZE_LIMIT": "1073741824",
-        "RefitRoute__FirstFlightSevice": "https://localhost:7208",
-        "RefitRoute__SecondFlightSevice": "http://localhost:8084"
+        "RefitRoute__FirstFlightSevice": "http://localhost:5024",
+        "RefitRoute__SecondFlightSevice": "http://localhost:5248"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5115"

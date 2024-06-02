@@ -54,9 +54,9 @@ namespace AirTravelAggregatorAPI.Services
             else
             {
                 _logger.LogInformation("data not found in cache, starting requests");
-                var fristFlights = await GetFirstServiceFlights(cancellationToken, date);
+                var firstFlights = await GetFirstServiceFlights(cancellationToken, date);
                 var secondFlights = await GetSecondServiceFlights(cancellationToken, date);
-                flights = fristFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));
+                flights = firstFlights.Select(f => _mapper.Map<FirstFlight, Flight>(f));
                 flights = flights.Concat(secondFlights.Select(f => _mapper.Map<SecondFlight, Flight>(f)));
                 memoryCache.Set($"{date}", flights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
             }
@@ -77,34 +77,45 @@ namespace AirTravelAggregatorAPI.Services
         /// Отправляется запрос в соответствующий источник
         /// </remarks>
         /// <param name="originalId">Id билета из оригинального источника</param>
-        /// <param name="sourse">Источник, из которого получен билет</param>
+        /// <param name="source">Источник, из которого получен билет</param>
         /// <param name="cancellationToken">Токен для отмены операции</param>
         /// <returns></returns>
-        public async Task<Flight> Book(string originalId, FlightSourse sourse, CancellationToken cancellationToken)
+        public async Task<Flight> Book(string originalId, FlightSource source, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("start booking flight from {@sourse} with id: {@originalId}", sourse.ToString(), originalId);
-            switch (sourse)
+            _logger.LogInformation("start booking flight from {@source} with id: {@originalId}", source.ToString(), originalId);
+            Flight bookedFlight = null;
+            switch (source)
             {
-                case FlightSourse.FirstFlightService:
+                case FlightSource.FirstFlightService:
                     var firstFlightResponse = await _firstFlightService.Book(originalId);
                     var firstFlight = firstFlightResponse.Content;
-                    if (firstFlight == null)
+                    if (firstFlight != null)
                     {
-                        return null;
+                        bookedFlight = _mapper.Map<FirstFlight, Flight>(firstFlight);
                     }
-                    return _mapper.Map<FirstFlight, Flight>(firstFlight);
-
-                case FlightSourse.SecondFlightService:
+                    break;
+                case FlightSource.SecondFlightService:
                     var secondFlightResponse = await _secondFlightService.Book(originalId);
                     var secondFlight = secondFlightResponse.Content;
-                    if (secondFlight == null)
+                    if (secondFlight != null)
                     {
-                        return null;
+                        bookedFlight = _mapper.Map<SecondFlight, Flight>(secondFlight);
                     }
-                    return _mapper.Map<SecondFlight, Flight>(secondFlight);
+                    break;
+
                 default:
                     return null;
             }
+            if (bookedFlight != null)
+            {
+                if (memoryCache.TryGetValue($"{bookedFlight.DeparturePoint.DepartureTime.Date}", out IEnumerable<Flight> flights))
+                {
+                    var updatedFlights = flights.Select(f => f.OriginalId == bookedFlight.OriginalId && f.Source == bookedFlight.Source ? bookedFlight : f).ToList();
+                    memoryCache.Set($"{bookedFlight.DeparturePoint.DepartureTime.Date}", updatedFlights, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30)));
+                }
+            }
+
+            return bookedFlight;
 
         }
         private async Task<IEnumerable<FirstFlight>> GetFirstServiceFlights(CancellationToken cancellationToken, DateTime date, SortProperty sortProperty = SortProperty.ByPrice, decimal maxPrice = decimal.MaxValue, string airlineName = "", int maxTransfersCount = int.MaxValue)

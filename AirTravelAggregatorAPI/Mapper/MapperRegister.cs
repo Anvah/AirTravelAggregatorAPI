@@ -23,7 +23,7 @@ namespace AirTravelAggregatorAPI.Mapper
              .Map(dest => dest.Transfers, src => CreateDestinationsFromFirstFlightTransfer(src.Transfers))
              .Map(dest => dest.Price, src => src.Price)
              .Map(dest => dest.Baggage, src => new Baggage { IsAvailable = true})
-             .Map(dest => dest.Sourse, src => FlightSourse.FirstFlightService);
+             .Map(dest => dest.Source, src => FlightSource.FirstFlightService);
 
 
             config.NewConfig<SecondFlight, Flight>()
@@ -35,7 +35,7 @@ namespace AirTravelAggregatorAPI.Mapper
                 .Map(dest => dest.ArrivalPoint, src => new Destination { AirportName = src.ArrivalAirport, CityName = src.ArrivalCity, CountryName = src.ArrivalCountry, ArrivalTime = DateTime.Parse(src.ArrivalTime) })
                 .Map(dest => dest.Transfers, src => CreateDestinationsFroSecondFlightTransfer(src.Transfres, src.TransfersArivalDateTime, src.TransfersDepartureDateTime))
                 .Map(dest => dest.Baggage, src => new Baggage { IsAvailable = src.IsBaggageAvaible, Price = src.BaggagePrice })
-                .Map(dest => dest.Sourse, src => FlightSourse.SecondFlightService);
+                .Map(dest => dest.Source, src => FlightSource.SecondFlightService);
                 
         }
 
